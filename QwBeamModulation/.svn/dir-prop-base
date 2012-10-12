@@ -1,0 +1,13 @@
+K 10
+svn:ignore
+V 81
+qwbeammod
+qwlibra
+upload_beammod_data.pl
+QwDB.pm
+.db
+qw_ndelta
+qwcharge
+qwdbplot
+
+END

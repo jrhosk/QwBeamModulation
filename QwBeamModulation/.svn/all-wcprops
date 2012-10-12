@@ -1,0 +1,65 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/repos/!svn/ver/4677/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation
+END
+qwbeammod.cc
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/repos/!svn/ver/4616/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/qwbeammod.cc
+END
+bmod_jsub.bash
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/!svn/ver/4482/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/bmod_jsub.bash
+END
+bmod_farm.bash
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/!svn/ver/4338/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/bmod_farm.bash
+END
+qw_jsub_bm.pl
+K 25
+svn:wc:ra_dav:version-url
+V 90
+/repos/!svn/ver/4410/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/qw_jsub_bm.pl
+END
+bmod_r1p4.bash
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/!svn/ver/4486/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/bmod_r1p4.bash
+END
+bmod_sub.pl
+K 25
+svn:wc:ra_dav:version-url
+V 88
+/repos/!svn/ver/3912/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/bmod_sub.pl
+END
+bmod_cdaq.bash
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/repos/!svn/ver/4337/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/bmod_cdaq.bash
+END
+modulation.bash
+K 25
+svn:wc:ra_dav:version-url
+V 92
+/repos/!svn/ver/4337/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/modulation.bash
+END
+Makefile
+K 25
+svn:wc:ra_dav:version-url
+V 85
+/repos/!svn/ver/4593/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/Makefile
+END
+bmod.bash
+K 25
+svn:wc:ra_dav:version-url
+V 86
+/repos/!svn/ver/4482/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/bmod.bash
+END
