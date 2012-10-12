@@ -277,6 +277,7 @@ public :
   Bool_t fSingleCoil;
   Bool_t fCharge;
   Bool_t fFileSegmentInclude;
+  Bool_t fRunNumberSet;
 
   TString fChargeFile;
   TString fFileSegment;

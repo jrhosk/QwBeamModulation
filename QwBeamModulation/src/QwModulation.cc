@@ -19,7 +19,8 @@ QwModulation::QwModulation(TChain *tree):
   fNModType(5), fPedestal(-50), fXNevents(0), fXPNevents(0), 
   fENevents(0),fYNevents(0), fYPNevents(0),fCurrentCut(40),
   fXinit(false), fYinit(false), fEinit(false), fXPinit(false), 
-  fYPinit(false), fSingleCoil(false), fFileSegment(""), fFileStem("QwPass*") 
+  fYPinit(false), fSingleCoil(false), fRunNumberSet(false), 
+  fFileSegment(""), fFileStem("QwPass*") 
 {
    Init(tree);
 }
@@ -86,7 +87,18 @@ void QwModulation::GetOptions(Char_t **options){
   while(options[i] != NULL){
     flag = options[i];
 
-    if(flag.CompareTo("--q", TString::kExact) == 0){
+    if(flag.CompareTo("--run", TString::kExact) == 0){
+      std::string option(options[i+1]);
+      flag.Clear();
+      fRunNumberSet = true;
+      run_number = atoi(options[i + 1]);
+
+      std::cout << other << "Processing run number:\t" 
+		<< run_number
+		<< normal << std::endl;
+    }    
+
+    if(flag.CompareTo("--charge-sens", TString::kExact) == 0){
       fCharge = true;
       flag.Clear();
       fChargeFile = Form("config/charge_sensitivity_%i.dat", run_number);
@@ -796,10 +808,10 @@ void QwModulation::CalculateSlope(Int_t fModType)
   Double_t sigma_slope = 0;
   Double_t slope = 0;
 
-  Double_t fPhase[5]={0.26, 0.26, 0.0, 1.08, 1.08};       // Set 4
-//   Double_t fPhase[5]={0.0, 0.0, 0.0, 0.0, 1.57};               // Set Kent
-//   Double_t fPhase[5]={0.0, 0.0, 0.0, 0.0, 0.0};               // Set Wouter
-//   Double_t fPhase[5]={0.07, 1.6408, 0.0, 1.6408, 0.07};
+  Double_t fPhase[5]={0.26, 0.26, 0.0, 1.08, 1.08};                // Set 4
+  //   Double_t fPhase[5]={0.0, 0.0, 0.0, 0.0, 1.57};              // Set Kent
+  //   Double_t fPhase[5]={0.0, 0.0, 0.0, 0.0, 0.0};               // Set Wouter
+  //   Double_t fPhase[5]={0.07, 1.6408, 0.0, 1.6408, 0.07};
 
   for(Int_t i = 0; i < 5; i++)
     std::cout << red << fPhase[i] << "\t" << normal; 

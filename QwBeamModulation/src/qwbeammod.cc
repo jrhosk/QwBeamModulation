@@ -10,18 +10,22 @@ Int_t main(Int_t argc, Char_t *argv[])
 
   QwModulation *modulation = new QwModulation(mps_tree);
 
-  if(argv[1] == NULL){
-    modulation->PrintError("Error Loading:  no run number specified");
-    exit(1);
-  }
+//   if(argv[1] == NULL){
+//     modulation->PrintError("Error Loading:  no run number specified");
+//     exit(1);
+//   }
 
-  modulation->SetupMpsBranchAddress();
 //   TString test = argv[1];
 //   if(test.Contains("--Q", TString::kExact)) std::cout << "Charge!!!!" << std::endl;
 
-  modulation->run_number = atoi(argv[1]);
+//   modulation->run_number = atoi(argv[1]);
   modulation->GetOptions(argv);
 
+  if( !(modulation->fRunNumberSet) ){
+    modulation->PrintError("Error Loading:  no run number specified");
+    exit(1);
+  }
+  modulation->SetupMpsBranchAddress();
   // This is the default filename format.  If doing a segment analysis
   // it is changes in QwModulation::FileSearch()
 
