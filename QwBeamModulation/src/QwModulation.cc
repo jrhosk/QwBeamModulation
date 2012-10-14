@@ -429,78 +429,43 @@ void QwModulation::ComputeErrors(TMatrixD Y, TMatrixD eY, TMatrixD A, TMatrixD e
   TMatrixD Errord(fNDetector, fNModType);  
   TMatrixD Error(fNDetector, fNModType);  
 
-//     for(Int_t i = 0; i < fNMonitor; i++){
-//       for(Int_t k = 0; k < fNModType; k++){
-// 	for(Int_t j = 0; j < fNModType; j++){
-//    	  temp(i, k) += TMath::Power(eA(i, j), 2)*TMath::Power(A(j, k), 2);
-// //  	  temp(i, k) += eA(i, j)*A(j, k);
-// 	}
-//       }
-//     }
-//        std::cout << "temp:\n" << std::endl;
-//        temp.Print();
-    
     for(Int_t i = 0; i < fNMonitor; i++){
       for(Int_t k = 0; k < fNModType; k++){
 	for(Int_t n = 0; n < fNModType; n++){
 	  for(Int_t j = 0; j < fNModType; j++){
 	    var(i, k) += TMath::Power(A(i, n), 2)*TMath::Power(eA(n, j), 2)*TMath::Power(A(j, k), 2);
-	    //   	  var(i, k) += TMath::Power(A(i, j)*temp(j, k), 2);
 	  }
 	}
       }
     }
        
-//     std::cout << "\t::Error of Inverse Matrix::\n" << std::endl;
-//     var.Print();
-    
-//     std::cout << "Y:\n" << std::endl;
-//     Y.Print();
-
     for(Int_t m = 0; m < fNDetector; m++){    
 
       for(Int_t i = 0; i < fNMonitor; i++){
 	for(Int_t j = 0; j < fNModType; j++){
  	  Errorm(m, i) += var(j, i)*TMath::Power( Y(m, j),2);
-// 	  std::cout << TMath::Power( Y(m, j),2) << "*" << var(j, i) << " + ";
 	}
-// 	std::cout << std::endl;
       }
  
-  
-//        std::cout << "\t::Error on sensitivity (part 1)::\n" << std::endl;
        for(Int_t i = 0; i < fNModType; i++)
          Errorm(m, i) = TMath::Sqrt(Errorm(m, i));
-//        Errorm.Print();
-    
-//        std::cout << "\t::A^-1::" << std::endl;
-//        A.Print();
-    
-//        std::cout << "\t::Error on Y::" << std::endl;
-//        eY.Print();
-       
        for(Int_t i = 0; i < fNMonitor; i++){
 	 for(Int_t j = 0; j < fNModType; j++){
 	   Errord(m, i) += TMath::Power( A(j, i),2)*TMath::Power(eY(m, j) ,2);
 	 }
        }
     
-//        std::cout << "\t::Error on sensitivity (part 2)::\n" << std::endl;
        for(Int_t i = 0; i < fNModType; i++)
 	 Errord(m,i) = TMath::Sqrt(Errord(m,i));
-       //       Errord.Print();
     
      for(Int_t i = 0; i < fNModType; i++){
        Error(m, i) = TMath::Power(Errord(m, i), 2) + TMath::Power(Errorm(m, i), 2);
-       //       Error(m, i) = Errorm(m, i);
        Error(m, i) = TMath::Sqrt(Error(m, i));
        YieldSlopeError[m][i] = Error(m, i);
      }
 
     }
     std::cout << other << "Errors?!" << normal << std::endl;
-//     Errorm.Print();
-//     Errord.Print();
     Error.Print();
 }
 
@@ -599,8 +564,6 @@ void QwModulation::ComputeAsymmetryCorrections()
   //
   //**************************************************************
 
-
-
   TFile file(Form("$QW_ROOTFILES/bmod_tree%s_%i.root", fFileSegment.Data(), run_number),"RECREATE");
 
   TTree *mod_tree = new TTree("Mod_Tree", "Modulation Analysis Results Tree");
@@ -678,15 +641,10 @@ void QwModulation::ComputeAsymmetryCorrections()
     fChain->GetEntry(i);
     ++fEvCounter;
     
-//     if( (ErrorCodeCheck("hel_tree") == 0 && yield_qwk_mdallbars_hw_sum != 0) ){
-
-//     Int_t factor[5] = {1, 1, 1, -1, -1}; // Checking a sign?!
-
     if( (ErrorCodeCheck("hel_tree") == 0) ){
       for(Int_t j = 0; j < fNDetector; j++){
 	for(Int_t k = 0; k < fNMonitor; k++){
-  	  temp_correction += YieldSlope[j][k]*HMonBranch[k][0];    // normal bm method
-//  	  temp_correction += sens[k]*HMonBranch[k][0];
+  	  temp_correction += YieldSlope[j][k]*HMonBranch[k][0]; 
 	  monitor_correction[j][k] = YieldSlope[j][k]*HMonBranch[k][0];
 	  if(fCharge) 
 	  if( (i % 100000) == 0 ){}
@@ -821,8 +779,6 @@ void QwModulation::CalculateSlope(Int_t fModType)
     std::cout << red << "Error in run:: Number of good events too small, exiting." << normal << std::endl;
     return;
   }
-
-//   std::cout << "Events to reg fit:\t" << fNEvents << std::endl;
   
   if(CoilData[fModType].size() <= 0){
     std::cout << "!!!!!!!!!!!!!!!!! Illegal Coil vector length:\t" << CoilData[fModType].size() << std::endl;
@@ -961,7 +917,6 @@ void QwModulation::PilferData()
   std::cout << "Number of entries: " << nentries << std::endl;
 
   for(Long64_t i = 0; i < nentries; i++){
-//  for(Long64_t i = 0; i < 400000; i++){
 
     LoadTree(i);
     if(i < 0) break;
@@ -1234,7 +1189,6 @@ Int_t QwModulation::ReadConfig(QwModulation *meteor)
     token = strtok(token, " ,.");
     while(token){
       if(strcmp("mon", token) == 0){
-
        	// Here the extra strtok(NULL, " .,") keeps scanning for next token
 
        	token = strtok(NULL, " .,"); 
@@ -1242,7 +1196,6 @@ Int_t QwModulation::ReadConfig(QwModulation *meteor)
 	meteor->MonitorList.push_back(token); 
        }
       if(strcmp("det", token) == 0){
-
        	// Here the extra strtok(NULL, " .,") keeps scanning for next token
 
        	token = strtok(NULL, " .,"); 
