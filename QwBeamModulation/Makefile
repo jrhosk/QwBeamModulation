@@ -107,5 +107,5 @@ qwcorrelation: ${SRC}/qwcorrelation.o ${SRC}/QwSlug.o
 qwregrun: ${SRC}/qwregrun.o ${SRC}/QwSlug.o 	
 	${CC} ${INCLUDES} -o $@  ${CFLAGS} $^ ${ROOTLIBS} ${ROOTGLIBS}  ${LIB}
 clean: 
-	rm -f *.o ~* src/*.o src/~* qwbeammod qwlibra qwcharge qwdbplot qw_ndelta asymmetry_plotter qwslug qwcorrelation qwregrun ramp_pedestal
+	rm -f *.o ~* src/*.o src/*.cc~ include/*.hh~ qwbeammod qwlibra qwcharge qwdbplot qw_ndelta asymmetry_plotter qwslug qwcorrelation qwregrun ramp_pedestal
 

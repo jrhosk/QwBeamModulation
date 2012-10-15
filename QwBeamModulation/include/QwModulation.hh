@@ -251,6 +251,7 @@ public :
   std::vector <TString> YMonitorList;
 
   std::vector <Double_t> sens;
+  std::vector <Double_t> phase;
   std::vector <Double_t> correction;
   std::vector <Double_t> correction_charge;
   std::vector <Double_t> ChargeSensitivity;
@@ -278,10 +279,12 @@ public :
   Bool_t fCharge;
   Bool_t fFileSegmentInclude;
   Bool_t fRunNumberSet;
+  Bool_t fPhaseConfig;
 
   TString fChargeFile;
   TString fFileSegment;
   TString fFileStem;
+  TString output;
 
   QwModulation(TChain *tree = 0);
   ~QwModulation();
@@ -289,6 +292,7 @@ public :
   Int_t    Cut(Long64_t entry);
   Int_t    GetEntry(Long64_t entry);
   Int_t    ReadConfig(QwModulation *);
+  Int_t    ReadPhaseConfig(Char_t *);
   Int_t    ErrorCodeCheck(TString);
   Int_t    ConvertPatternNumber(Int_t);
   Int_t    GetCurrentCut();
@@ -318,6 +322,7 @@ public :
   void     SetupMpsBranchAddress(void); 
   void     SetupHelBranchAddress(void); 
   void     PrintError(TString);
+  void     SetPhaseValues(Double_t *);
   void     Write();
   void     Clean(void);
   void     CleanFolders(void);

@@ -20,7 +20,7 @@ QwModulation::QwModulation(TChain *tree):
   fENevents(0),fYNevents(0), fYPNevents(0),fCurrentCut(40),
   fXinit(false), fYinit(false), fEinit(false), fXPinit(false), 
   fYPinit(false), fSingleCoil(false), fRunNumberSet(false), 
-  fFileSegment(""), fFileStem("QwPass*") 
+  fPhaseConfig(false), fFileSegment(""), fFileStem("QwPass*") 
 {
    Init(tree);
 }
@@ -98,6 +98,15 @@ void QwModulation::GetOptions(Char_t **options){
 		<< normal << std::endl;
     }    
 
+    if(flag.CompareTo("--phase-config", TString::kExact) == 0){
+      std::string option(options[i+1]);
+      flag.Clear();
+      fPhaseConfig = true;
+      ReadPhaseConfig(options[i + 1]);
+      std::cout << other << "Setting external phase values:\t" 
+		<< normal << std::endl;
+    }    
+
     if(flag.CompareTo("--charge-sens", TString::kExact) == 0){
       fCharge = true;
       flag.Clear();
@@ -143,7 +152,7 @@ void QwModulation::GetOptions(Char_t **options){
 		<< normal << std::endl;
     }    
 
-    if(flag.CompareTo("--c", TString::kExact) == 0){
+    if(flag.CompareTo("--charge", TString::kExact) == 0){
       fCharge = true;
       flag.Clear();
       if( IfExists(options[i + 1]) ){
@@ -165,8 +174,8 @@ void QwModulation::GetOptions(Char_t **options){
     if(flag.CompareTo("--help", TString::kExact) == 0){
       printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
       printf("Usage: ./qwbeammod <run_number> <options>");
-      printf("\n\t--q \t\tinclude charge sensitivity in overall correction to physics asymmetry.");
-      printf("\n\t--c \t\tsame as --q except use can specify path of charge sensitivities.");
+      printf("\n\t--charge-sens \t\tinclude charge sensitivity in overall correction to physics asymmetry.");
+      printf("\n\t--charge \t\tsame as --chare-sesn except use can specify path of charge sensitivities.");
       printf("\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
       exit(0);
     }        
@@ -479,7 +488,7 @@ void QwModulation::MatrixFill()
 
   CheckFlags();
 
-//   diagnostic.open(Form("diagnostic%s_%i.dat", fFileSegment.Data(), run_number) , fstream::out);
+  diagnostic.open(Form("%s/diagnostics/diagnostic%s_%i.dat", output.Data(), fFileSegment.Data(), run_number) , fstream::out);
 
   for(Int_t j = 0; j < fNDetector; j++){
     diagnostic << DetectorList[j] << std::endl;
@@ -539,16 +548,12 @@ void QwModulation::MatrixFill()
 
   ComputeErrors(AMatrix, AMatrixE, RMatrixInv, RMatrixE);
 
-//   exit(1);
-
   for(Int_t i = 0; i < fNDetector; i++){
     for(Int_t j = 0; j < fNModType; j++){
       YieldSlope[i][j] = SMatrix(i,j);
     }
   }
-  // exit(1);
   Write();
-//   exit(1);
 
   if(fSensHumanReadable == 1){
     std::cout << "Exiting after sensitivities." << std::endl;
@@ -564,7 +569,7 @@ void QwModulation::ComputeAsymmetryCorrections()
   //
   //**************************************************************
 
-  TFile file(Form("$QW_ROOTFILES/bmod_tree%s_%i.root", fFileSegment.Data(), run_number),"RECREATE");
+  TFile file(Form("%s/rootfiles/bmod_tree%s_%i.root", output.Data(), fFileSegment.Data(), run_number),"RECREATE");
 
   TTree *mod_tree = new TTree("Mod_Tree", "Modulation Analysis Results Tree");
 
@@ -632,8 +637,6 @@ void QwModulation::ComputeAsymmetryCorrections()
 
   std::cout << other << "Entries in Hel_Tree:\t" 
 	    << nentries << normal << std::endl;
-
-//   Double_t sens[5] = {0.004290, 120.2, -0.001570, 44.57e-6, 7.99};
 
   for(Long64_t i = 0; i < nentries; i++){
     LoadTree(i);
@@ -755,7 +758,7 @@ void QwModulation::CalculateWeightedSlope()
 
 }
 
-void QwModulation::CalculateSlope(Int_t fModType)
+void QwModulation::CalculateSlope(Int_t fNModType)
 {
 
   Double_t c_mean = 0;
@@ -766,22 +769,19 @@ void QwModulation::CalculateSlope(Int_t fModType)
   Double_t sigma_slope = 0;
   Double_t slope = 0;
 
-  Double_t fPhase[5]={0.26, 0.26, 0.0, 1.08, 1.08};                // Set 4
-  //   Double_t fPhase[5]={0.0, 0.0, 0.0, 0.0, 1.57};              // Set Kent
-  //   Double_t fPhase[5]={0.0, 0.0, 0.0, 0.0, 0.0};               // Set Wouter
-  //   Double_t fPhase[5]={0.07, 1.6408, 0.0, 1.6408, 0.07};
 
-  for(Int_t i = 0; i < 5; i++)
-    std::cout << red << fPhase[i] << "\t" << normal; 
-  std::cout << std::endl;
+  if(!fPhaseConfig){
+    Double_t temp[5]={0.26, 0.26, 0.0, 1.08, 1.08};              
+    SetPhaseValues(temp); 
+  }
 
   if(fNEvents < 3){
     std::cout << red << "Error in run:: Number of good events too small, exiting." << normal << std::endl;
     return;
   }
   
-  if(CoilData[fModType].size() <= 0){
-    std::cout << "!!!!!!!!!!!!!!!!! Illegal Coil vector length:\t" << CoilData[fModType].size() << std::endl;
+  if(CoilData[fNModType].size() <= 0){
+    std::cout << "!!!!!!!!!!!!!!!!! Illegal Coil vector length:\t" << CoilData[fNModType].size() << std::endl;
     return;
   }
    
@@ -794,23 +794,23 @@ void QwModulation::CalculateSlope(Int_t fModType)
 
    //*******************************
 
-    if(fModType == fXModulation)  fXNevents += fNEvents;
-    if(fModType == fYModulation)  fYNevents += fNEvents;
-    if(fModType == fEModulation)  fENevents += fNEvents;
-    if(fModType == fXPModulation) fXPNevents += fNEvents;
-    if(fModType == fYPModulation) fYPNevents += fNEvents;
+    if(fNModType == fXModulation)  fXNevents += fNEvents;
+    if(fNModType == fYModulation)  fYNevents += fNEvents;
+    if(fNModType == fEModulation)  fENevents += fNEvents;
+    if(fNModType == fXPModulation) fXPNevents += fNEvents;
+    if(fNModType == fYPModulation) fYPNevents += fNEvents;
 
     //*******************************
    
-    for(Int_t evNum = 0; evNum < fNEvents; evNum++) c_mean += TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fModType][evNum] + fPhase[fModType]);
+    for(Int_t evNum = 0; evNum < fNEvents; evNum++) c_mean += TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fNModType][evNum] + phase[fNModType]);
       c_mean /=fNEvents;
       
       for(Int_t evNum = 0; evNum < fNEvents; evNum++) d_mean += DetectorData[det][evNum];
       d_mean /=fNEvents;
 
       for(Int_t evNum = 0; evNum < fNEvents; evNum++){
-	sigma_cc += (TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fModType][evNum] + fPhase[fModType] ) - c_mean)*(TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fModType][evNum] + fPhase[fModType] ) - c_mean);
-	sigma_dc += (DetectorData[det][evNum] - d_mean)*(TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fModType][evNum] + fPhase[fModType] ) - c_mean);
+	sigma_cc += (TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fNModType][evNum] + phase[fNModType] ) - c_mean)*(TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fNModType][evNum] + phase[fNModType] ) - c_mean);
+	sigma_dc += (DetectorData[det][evNum] - d_mean)*(TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fNModType][evNum] + phase[fNModType] ) - c_mean);
 	sigma_dd += (DetectorData[det][evNum] - d_mean)*(DetectorData[det][evNum] - d_mean);
 
 	// Clear instances after computation
@@ -824,11 +824,11 @@ void QwModulation::CalculateSlope(Int_t fModType)
       // Load Yields in to make Yield Correction a little easier in the end.
       //
       if(fSensHumanReadable == 1){
-	 DetectorSlope[fModType][det].push_back(1e6*slope/( TMath::Abs(d_mean) ));
-	 DetectorSlopeError[fModType][det].push_back(1e6*sigma_slope/( TMath::Abs(d_mean) ));
+	 DetectorSlope[fNModType][det].push_back(1e6*slope/( TMath::Abs(d_mean) ));
+	 DetectorSlopeError[fNModType][det].push_back(1e6*sigma_slope/( TMath::Abs(d_mean) ));
       }else{
-	 DetectorSlope[fModType][det].push_back(slope/( TMath::Abs(d_mean) ));
-	 DetectorSlopeError[fModType][det].push_back(sigma_slope/( TMath::Abs(d_mean) ));
+	 DetectorSlope[fNModType][det].push_back(slope/( TMath::Abs(d_mean) ));
+	 DetectorSlopeError[fNModType][det].push_back(sigma_slope/( TMath::Abs(d_mean) ));
       }
       
       c_mean = 0;
@@ -845,15 +845,15 @@ void QwModulation::CalculateSlope(Int_t fModType)
 	std::cout << "!!!!!!!!!!!!!!!!! Illegal Monitor vector length:\t" << MonitorData[mon].size() << std::endl;
 	return;
       }
-      for(Int_t evNum = 0; evNum < fNEvents; evNum++) c_mean += TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fModType][evNum] + fPhase[fModType] );
+      for(Int_t evNum = 0; evNum < fNEvents; evNum++) c_mean += TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fNModType][evNum] + phase[fNModType] );
       c_mean /=fNEvents;
       
       for(Int_t evNum = 0; evNum < fNEvents; evNum++) d_mean += MonitorData[mon][evNum];
       d_mean /=fNEvents;
   
       for(Int_t evNum = 0; evNum < fNEvents; evNum++){
-	sigma_cc += (TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fModType][evNum] + fPhase[fModType] ) - c_mean)*(TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fModType][evNum] +fPhase[fModType] ) - c_mean);
-	sigma_dc += (MonitorData[mon][evNum] - d_mean)*(TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fModType][evNum] + fPhase[fModType] ) - c_mean);
+	sigma_cc += (TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fNModType][evNum] + phase[fNModType] ) - c_mean)*(TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fNModType][evNum] +phase[fNModType] ) - c_mean);
+	sigma_dc += (MonitorData[mon][evNum] - d_mean)*(TMath::Sin( (TMath::Pi()/180)*0.091548*CoilData[fNModType][evNum] + phase[fNModType] ) - c_mean);
 	sigma_dd += (MonitorData[mon][evNum] - d_mean)*(MonitorData[mon][evNum] - d_mean);
 	// Clear instances after computation
 	MonitorData[mon].clear();
@@ -862,8 +862,8 @@ void QwModulation::CalculateSlope(Int_t fModType)
       slope = sigma_dc/sigma_cc;
       sigma_slope = TMath::Sqrt((sigma_dd - (sigma_dc*sigma_dc)/sigma_cc)/(sigma_cc*(fNEvents -2 )));
       
-      MonitorSlope[fModType][mon].push_back(slope);
-      MonitorSlopeError[fModType][mon].push_back(sigma_slope);
+      MonitorSlope[fNModType][mon].push_back(slope);
+      MonitorSlopeError[fNModType][mon].push_back(sigma_slope);
 
       c_mean = 0;
       d_mean = 0;
@@ -875,15 +875,15 @@ void QwModulation::CalculateSlope(Int_t fModType)
       
     }
     // Same as above.
-    CoilData[fModType].clear();
+    CoilData[fNModType].clear();
 
     // These need to be set so we know if we have a full set of modulation data
 
-    if(fModType == fXModulation)  fXinit = true;
-    if(fModType == fYModulation)  fYinit = true;
-    if(fModType == fEModulation)  fEinit = true;
-    if(fModType == fXPModulation) fXPinit = true;
-    if(fModType == fYPModulation) fYPinit = true;
+    if(fNModType == fXModulation)  fXinit = true;
+    if(fNModType == fYModulation)  fYinit = true;
+    if(fNModType == fEModulation)  fEinit = true;
+    if(fNModType == fXPModulation) fXPinit = true;
+    if(fNModType == fYPModulation) fYPinit = true;
 
     return;
 }
@@ -1170,6 +1170,88 @@ void QwModulation::BuildMonitorSlopeVector()
   return;
 }
 
+void QwModulation::SetPhaseValues(Double_t *val)
+{
+
+  phase.resize(5);
+  std::cout << other << "Default phase information:\t" << normal << std::endl;
+  for(Int_t i = 0; i < fNModType; i++){
+    phase[i] = val[i];
+    std::cout << other << phase[i] << normal << std::endl;
+  }
+
+  return;
+}
+
+Int_t QwModulation::ReadPhaseConfig(Char_t *file)
+{
+
+  std::string line;
+  
+  char *token;
+
+  std::fstream fphase;
+
+
+  fphase.open(file, std::ios_base::in);
+  if(!fphase.is_open()){
+    std::cout << red << "Error opening phase config file.  Using default values." 
+	      << normal << std::endl;
+    fPhaseConfig = false;
+    return 1;
+  }
+
+  phase.resize(fNModType);
+  while(fphase.good()){
+    getline(fphase, line);
+    token = new char[line.size() + 1];
+    strcpy(token, line.c_str());
+    token = strtok(token, " ,.");
+    while(token){
+      if(strcmp("x", token) == 0){
+       	// Here the extra strtok(NULL, " .,") keeps scanning for next token
+
+       	token = strtok(NULL, " ,"); 
+       	std::cout << other << "\t\tX phase is: " << token << normal << std::endl;
+	phase[fXModulation] = atof(token); 
+       }
+      if(strcmp("xp", token) == 0){
+       	// Here the extra strtok(NULL, " .,") keeps scanning for next token
+
+       	token = strtok(NULL, " ,"); 
+       	std::cout << other << "\t\tXP phase is: " << token << normal << std::endl;
+	phase[fXPModulation] = atof(token); 
+       }
+      if(strcmp("e", token) == 0){
+       	// Here the extra strtok(NULL, " .,") keeps scanning for next token
+
+       	token = strtok(NULL, " ,"); 
+       	std::cout << other << "\t\tE phase is: " << token << normal << std::endl;
+	phase[fEModulation] = atof(token); 
+       }
+      if(strcmp("y", token) == 0){
+       	// Here the extra strtok(NULL, " .,") keeps scanning for next token
+
+       	token = strtok(NULL, " ,"); 
+       	std::cout << other << "\t\tY phase is: " << token << normal << std::endl;
+	phase[fYModulation] = atof(token); 
+       }
+      if(strcmp("yp", token) == 0){
+       	// Here the extra strtok(NULL, " .,") keeps scanning for next token
+
+       	token = strtok(NULL, " ,"); 
+       	std::cout << other << "\t\tYP phase is: " << token << normal << std::endl;
+	phase[fYPModulation] = atof(token); 
+       }
+      else 
+       	token = strtok(NULL, " ,"); 
+    }
+    fPhaseConfig = true;
+  }
+
+  return 0;
+}
+
 Int_t QwModulation::ReadConfig(QwModulation *meteor)
 {
   std::string line;
@@ -1192,14 +1274,14 @@ Int_t QwModulation::ReadConfig(QwModulation *meteor)
        	// Here the extra strtok(NULL, " .,") keeps scanning for next token
 
        	token = strtok(NULL, " .,"); 
-       	std::cout << red << "\t\tMonitor is: " << token << normal << std::endl;
+       	std::cout << other << "\t\tMonitor is: " << token << normal << std::endl;
 	meteor->MonitorList.push_back(token); 
        }
       if(strcmp("det", token) == 0){
        	// Here the extra strtok(NULL, " .,") keeps scanning for next token
 
        	token = strtok(NULL, " .,"); 
-       	std::cout << red << "\t\tDetector is: " << token << normal << std::endl; 
+       	std::cout << other << "\t\tDetector is: " << token << normal << std::endl; 
 	meteor->DetectorList.push_back(token);
       }
       else 
@@ -1212,8 +1294,8 @@ Int_t QwModulation::ReadConfig(QwModulation *meteor)
   if( (fNDetector > fNMaxDet) || (fNMonitor > fNMaxMon) )
     {
       std::cout << red << "Error :: Exceeded maximum number of detectors(monitors)" 
-		<< other << "Detectors:\t" << fNDetector << "\tMax:\t" << fNMaxDet
-		<< other << "Monitors:\t" << fNMonitor   << "\tMax:\t" << fNMaxMon
+		<< red << "Detectors:\t" << fNDetector << "\tMax:\t" << fNMaxDet
+		<< red << "Monitors:\t" << fNMonitor   << "\tMax:\t" << fNMaxMon
 		<< normal << std::endl;
       exit(1);
     }
@@ -1246,7 +1328,6 @@ Bool_t QwModulation::FileSearch(TString filename, TChain *chain)
 
   if(fFileSegmentInclude){
     for(Int_t i = fLowerSegment; i <= fUpperSegment; i++){
-//       filename = Form("%s_%d.*%d.root", fFileStem.Data(), run_number, i);
       filename = Form("%s_%d.*%d.trees.root", fFileStem.Data(), run_number, i);
       std::cout << other << "Adding:: " 
 		<< filename << normal << std::endl;
@@ -1307,8 +1388,8 @@ void QwModulation::Write(){
 
   gSystem->Exec("umask 002");
 
-  slopes.open(Form("slopes/slopes%s_%i.dat", fFileSegment.Data(), run_number) , fstream::out);
-  //  regression = fopen(Form("regression%s_%i.dat", fFileSegment.Data(), run_number), "w");
+  slopes.open(Form("%s/slopes/slopes%s_%i.dat", output.Data(), fFileSegment.Data(), run_number) , fstream::out);
+  regression = fopen(Form("%s/regression/regression%s_%i.dat", output.Data(), fFileSegment.Data(), run_number), "w");
 
   if( (slopes.is_open() && slopes.good()) ){
     for(Int_t i = 0; i < fNDetector; i++){
@@ -1326,7 +1407,7 @@ void QwModulation::Write(){
     CleanFolders();
     exit(1);
   }
-  /*
+
   if( (diagnostic.is_open() && diagnostic.good()) ){
     diagnostic << "\n#Failed events in x,xp,e,y,yp\n" << std::endl;
     diagnostic << fXNevents  << std::endl;
@@ -1336,20 +1417,20 @@ void QwModulation::Write(){
     diagnostic << fYPNevents << std::endl;
     diagnostic << (fXNevents + fXPNevents + fENevents + fYNevents + fYPNevents) << std::endl;
   }
-  */
+
 
   //***************************************************************
   // Write output file for regression - This will go into the DB.  
   // All that is included here is the slopes(and errors soon...),
   // qwlibra must be run to get other run info.
   //***************************************************************
-  /*
+
   fprintf(regression, "#run=%i\tevents=%i\n",run_number, fNumberEvents);
   if( regression != NULL ){
     for(Int_t i = 0; i < fNDetector; i++){
       for(Int_t j = 0; j < fNModType; j++){
-	fprintf(regression, "%s/%s : %i : %e\n", DetectorList[i].Data(), MonitorList[j].Data(),
-		j, YieldSlope[i][j]);
+	fprintf(regression, "%s/%s : %i : %e %e\n", DetectorList[i].Data(), MonitorList[j].Data(),
+		j, YieldSlope[i][j], YieldSlopeError[i][j]);
       }
     }
   }
@@ -1360,10 +1441,10 @@ void QwModulation::Write(){
     gSystem->Exec(Form("rm -rf regression_%i", run_number));
     exit(1);
   }
-  */
-//   fclose(regression);
+
+  fclose(regression);
   slopes.close();
-//   diagnostic.close();
+  diagnostic.close();
   
   return;
 }
