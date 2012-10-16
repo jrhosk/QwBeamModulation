@@ -7,7 +7,7 @@ setup.config
 K 25
 svn:wc:ra_dav:version-url
 V 96
-/repos/!svn/ver/4593/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config/setup.config
+/repos/!svn/ver/4836/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config/setup.config
 END
 run.blacklist
 K 25

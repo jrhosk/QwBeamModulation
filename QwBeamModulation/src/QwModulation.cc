@@ -16,7 +16,7 @@ QwModulation::QwModulation(TChain *tree):
   fXPModulation(1),fYPModulation(4), fNEvents(0),
   fReduceMatrix_x(0), fReduceMatrix_y(0), fReduceMatrix_xp(0),
   fReduceMatrix_yp(0), fReduceMatrix_e(0), fSensHumanReadable(0),
-  fNModType(5), fPedestal(-50), fXNevents(0), fXPNevents(0), 
+  fNModType(5), fPedestal(0), fXNevents(0), fXPNevents(0), 
   fENevents(0),fYNevents(0), fYPNevents(0),fCurrentCut(40),
   fXinit(false), fYinit(false), fEinit(false), fXPinit(false), 
   fYPinit(false), fSingleCoil(false), fRunNumberSet(false), 

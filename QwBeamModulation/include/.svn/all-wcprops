@@ -13,7 +13,7 @@ QwModulation.hh
 K 25
 svn:wc:ra_dav:version-url
 V 100
-/repos/!svn/ver/4616/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/include/QwModulation.hh
+/repos/!svn/ver/4836/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/include/QwModulation.hh
 END
 headers.h
 K 25
@@ -37,7 +37,7 @@ QwDiagnostic.hh
 K 25
 svn:wc:ra_dav:version-url
 V 100
-/repos/!svn/ver/4410/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/include/QwDiagnostic.hh
+/repos/!svn/ver/4836/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/include/QwDiagnostic.hh
 END
 QwChargeSensitivity.hh
 K 25
