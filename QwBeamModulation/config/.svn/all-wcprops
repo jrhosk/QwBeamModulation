@@ -1,13 +1,37 @@
 K 25
 svn:wc:ra_dav:version-url
 V 83
-/repos/!svn/ver/4593/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config
+/repos/!svn/ver/4853/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config
+END
+phase_set1.config
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/!svn/ver/4853/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config/phase_set1.config
+END
+phase_set2.config
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/!svn/ver/4853/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config/phase_set2.config
+END
+phase_set3.config
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/!svn/ver/4853/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config/phase_set3.config
+END
+phase_set4.config
+K 25
+svn:wc:ra_dav:version-url
+V 101
+/repos/!svn/ver/4853/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config/phase_set4.config
 END
 setup.config
 K 25
 svn:wc:ra_dav:version-url
 V 96
-/repos/!svn/ver/4836/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config/setup.config
+/repos/!svn/ver/4853/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config/setup.config
 END
 run.blacklist
 K 25

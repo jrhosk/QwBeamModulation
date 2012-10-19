@@ -1,14 +1,14 @@
 10
 
 dir
-4714
+4856
 https://qweaksvn.jlab.org/repos/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/config
 https://qweaksvn.jlab.org/repos
 
 
 
-2012-06-28T20:54:07.855337Z
-4593
+2012-10-19T19:26:55.952778Z
+4853
 jhoskins
 
 
@@ -26,16 +26,16 @@ jhoskins
 
 b9700a98-9937-0410-b777-f318d6eb5bff
 
-setup.config
+phase_set1.config
 file
-4836
 
 
 
-2012-10-15T15:00:42.732324Z
-7428991422a0992f51b2468d3ececc02
-2012-10-16T18:41:16.606928Z
-4836
+
+2012-10-19T19:55:30.286479Z
+045dd53f116111afcb86b891fddfdc01
+2012-10-19T19:26:55.952778Z
+4853
 jhoskins
 
 
@@ -58,7 +58,143 @@ jhoskins
 
 
 
-583
+34
+
+phase_set2.config
+file
+
+
+
+
+2012-10-19T19:55:30.329044Z
+5fad030225bf35b135342af272c10f2c
+2012-10-19T19:26:55.952778Z
+4853
+jhoskins
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+35
+
+phase_set3.config
+file
+
+
+
+
+2012-10-19T19:55:30.340442Z
+3b963ae97c78d02650d56ab9173a9a6e
+2012-10-19T19:26:55.952778Z
+4853
+jhoskins
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+38
+
+phase_set4.config
+file
+
+
+
+
+2012-10-19T19:55:30.262616Z
+e47cd1703696d5f74fab8c7f7a07de0b
+2012-10-19T19:26:55.952778Z
+4853
+jhoskins
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+38
+
+setup.config
+file
+
+
+
+
+2012-10-19T19:55:30.334928Z
+d826c6f8e4d97850c405d56cf7372be3
+2012-10-19T19:26:55.952778Z
+4853
+jhoskins
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+554
 
 run.blacklist
 file
@@ -66,7 +202,7 @@ file
 
 
 
-2012-06-28T20:54:54.226146Z
+2012-10-19T19:55:30.279726Z
 b1c0f0e37f7e54f701c0ae070acdc6e0
 2012-06-28T20:54:07.855337Z
 4593
