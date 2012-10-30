@@ -1,14 +1,14 @@
 10
 
 dir
-4856
+4872
 https://qweaksvn.jlab.org/repos/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/include
 https://qweaksvn.jlab.org/repos
 
 
 
-2012-10-16T18:41:16.606928Z
-4836
+2012-10-29T04:30:11.367031Z
+4872
 jhoskins
 
 
@@ -66,10 +66,10 @@ file
 
 
 
-2012-10-19T19:55:30.460601Z
-3f08c3ebf6fba2a802f3ca6c500e2bcd
-2012-10-16T18:41:16.606928Z
-4836
+2012-10-22T23:43:26.302579Z
+eaf4aebf2eccafd97f11d6f55f6e5497
+2012-10-29T04:30:11.367031Z
+4872
 jhoskins
 
 
@@ -92,7 +92,7 @@ jhoskins
 
 
 
-10707
+10727
 
 headers.h
 file
@@ -232,14 +232,14 @@ jhoskins
 
 QwDiagnostic.hh
 file
-4862
 
 
 
-2012-10-21T00:02:59.069493Z
-7c230b58cb452a54b177d0bb311af8b3
-2012-10-21T01:42:10.679731Z
-4862
+
+2012-10-25T04:22:28.789091Z
+52a69f3f4f913914e73be130eecb3bc0
+2012-10-29T04:30:11.367031Z
+4872
 jhoskins
 
 
@@ -262,7 +262,7 @@ jhoskins
 
 
 
-3237
+3463
 
 QwDBConnection.hh
 file

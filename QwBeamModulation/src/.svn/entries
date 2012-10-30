@@ -1,14 +1,14 @@
 10
 
 dir
-4856
+4872
 https://qweaksvn.jlab.org/repos/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/src
 https://qweaksvn.jlab.org/repos
 
 
 
-2012-10-19T19:53:51.281638Z
-4855
+2012-10-29T04:30:11.367031Z
+4872
 jhoskins
 
 
@@ -62,14 +62,14 @@ pking
 
 QwDiagnostic.cc
 file
-4862
 
 
 
-2012-10-21T01:24:51.094523Z
-97e5f4016f3474c330db5949256ebb16
-2012-10-21T01:42:10.679731Z
-4862
+
+2012-10-29T04:05:00.714047Z
+c8c5dc9aba462b6dc719ddcd1e819c7b
+2012-10-29T04:30:11.367031Z
+4872
 jhoskins
 
 
@@ -92,7 +92,7 @@ jhoskins
 
 
 
-13667
+15514
 
 qwbeammod.cc
 file
@@ -338,10 +338,10 @@ file
 
 
 
-2012-10-19T19:55:34.706571Z
-d115422cada576b73080b88654da0a8b
-2012-10-16T18:41:16.606928Z
-4836
+2012-10-28T17:14:33.062284Z
+baf707b57a292ffe5c49f64332e98eaf
+2012-10-29T04:30:11.367031Z
+4872
 jhoskins
 
 
@@ -364,18 +364,18 @@ jhoskins
 
 
 
-29420
+29729
 
 QwModulation.cc
 file
-4862
 
 
 
-2012-10-21T01:25:37.359383Z
-88fec95d7c7e8edd08fdd6303c19f17c
-2012-10-21T01:42:10.679731Z
-4862
+
+2012-10-25T04:15:36.995127Z
+0d323f176906b09af4a580baf45a1c99
+2012-10-29T04:30:11.367031Z
+4872
 jhoskins
 
 
@@ -398,7 +398,7 @@ jhoskins
 
 
 
-43885
+44246
 
 QwDataContainer.cc
 file
