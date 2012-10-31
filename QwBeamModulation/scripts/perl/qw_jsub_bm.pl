@@ -16,7 +16,7 @@ use vars qw($runs, $verbose,
 	    $result);
 
 $result = GetOptions("run=s"     => \$run,
-		     "runlets=s" => \$runlets
+		     "runlets=s" => \$runlets,
 		     "verbose"    => \$verbose,
 		     "analyzer=s" => \$analyzer,
 		     "help"       => \$help);
