@@ -11,15 +11,13 @@ cd $scriptPath/../../
 
 scriptPath=`pwd`
 
-dbName="qw_run1_pass5"
+dbName="qw_test_20120720"
 
 export QWSCRATCH=/group/qweak/QwAnalysis/common/QwScratch
 export QWANALYSIS=/group/qweak/QwAnalysis/Linux_CentOS5.3-x86_64/QwAnalysis_3.04/
 . $QWANALYSIS/SetupFiles/SET_ME_UP.bash # >& /dev/null
 
 export QW_ROOTFILES=/volatile/hallc/qweak/QwAnalysis/run1/rootfiles
-#export QW_ROOTFILES=/scratch/jhoskins/scratch/rootfiles
-#export BMOD_OUT=`pwd`/output
 
 export BMOD_OUT=/w/hallc/qweak/QwAnalysis/run1/pass5regression/bmod_regression/output
 

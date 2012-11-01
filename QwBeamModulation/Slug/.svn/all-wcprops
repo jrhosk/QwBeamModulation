@@ -13,17 +13,29 @@ leaflist_run1pass5_unreg_mps.txt
 K 25
 svn:wc:ra_dav:version-url
 V 114
-/repos/!svn/ver/4856/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/Slug/leaflist_run1pass5_unreg_mps.txt
+/repos/!svn/ver/4895/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/Slug/leaflist_run1pass5_unreg_mps.txt
 END
 MakeSlug.C
 K 25
 svn:wc:ra_dav:version-url
 V 92
-/repos/!svn/ver/4875/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/Slug/MakeSlug.C
+/repos/!svn/ver/4895/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/Slug/MakeSlug.C
+END
+MakeSlugMPS.C
+K 25
+svn:wc:ra_dav:version-url
+V 95
+/repos/!svn/ver/4895/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/Slug/MakeSlugMPS.C
+END
+run_makeslug_mps
+K 25
+svn:wc:ra_dav:version-url
+V 98
+/repos/!svn/ver/4895/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/Slug/run_makeslug_mps
 END
 run_makeslug
 K 25
 svn:wc:ra_dav:version-url
 V 94
-/repos/!svn/ver/4875/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/Slug/run_makeslug
+/repos/!svn/ver/4895/QwAnalysis/trunk/Extensions/Regression/QwBeamModulation/Slug/run_makeslug
 END
